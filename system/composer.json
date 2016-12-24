@@ -1,0 +1,19 @@
+{
+    "name": "echoopress/framework",
+    "description": "",
+    "keywords": ["microframework", "EchooPress"],
+    "license": "MIT",
+    "require": {
+        "symfony/http-foundation": "^3.2",
+        "symfony/http-kernel": "^3.2",
+        "symfony/routing": "^3.2",
+        "symfony/event-dispatcher": "^3.2",
+        "symfony/dependency-injection": "^3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Echoopress\\Framework\\": "vendor/echoopress/framework/",
+            "": "applications/"
+        }
+    }
+}
