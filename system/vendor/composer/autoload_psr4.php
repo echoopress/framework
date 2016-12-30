@@ -15,5 +15,5 @@ return array(
     'Symfony\\Component\\Debug\\' => array($vendorDir . '/symfony/debug'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'Echoopress\\Framework\\' => array($vendorDir . '/echoopress/framework'),
-    '' => array($baseDir . '/applications'),
+    '' => array($baseDir . '/packages'),
 );

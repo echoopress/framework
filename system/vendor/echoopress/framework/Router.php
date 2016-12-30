@@ -6,7 +6,6 @@
 namespace Echoopress\Framework;
 
 use Closure;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -28,9 +27,24 @@ class Router extends RouteCollection
      * @param  \Closure|array|string|null  $action
      * @return
      */
-    public function addRoute($methods, $uri, $action)
+    public function route($methods, $uri, $action)
     {
-        $this->add($uri, $this->createRoute($methods, $uri, $action));
+        if (false === strpos($action, ':')) {
+            // load package routes
+            $this->loadPackage($action);
+        } else {
+            $this->add($uri, $this->createRoute($methods, $uri, $action));
+        }
+    }
+
+    public function loadPackage($package)
+    {
+        // todo make here decoupled
+        $pkgInfo = include_once SYSTEM_PATH.'packages/'.$package.'/app.php';
+        foreach ($pkgInfo['routes'] as $route) {
+            $uri = $pkgInfo['uri'].$route['uri'];
+            $this->add($uri, $this->createRoute($route['method'], $uri, $route['action']));
+        }
     }
 
     /**
@@ -51,9 +65,11 @@ class Router extends RouteCollection
         }
         else
         {
-            $route->setDefault('_controller', function($argument = null) use ($action) {
-                return new Response($action($argument));
-            });
+//            $route->setDefault('_controller', function($argument = null) use ($action) {
+//                return new Response($action($argument));
+//            });
+            // todo convert String to Response type
+            $route->setDefault('_controller', $action);
         }
         $route->setMethods($methods);
 

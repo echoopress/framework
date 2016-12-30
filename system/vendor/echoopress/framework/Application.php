@@ -21,8 +21,7 @@ class Application
     {
         // todo config setting
         date_default_timezone_set('UTC');
-        if (true)
-        {
+        if (DEBUG) {
             \Symfony\Component\Debug\Debug::enable();
         }
 
@@ -46,17 +45,12 @@ class Application
 
     public function get($uri, $action = null)
     {
-        $this->route('GET', $uri, $action);
+        $this->container->get('Router')->route('GET', $uri, $action);
     }
 
     public function post($uri, $action = null)
     {
-        $this->route('POST', $uri, $action);
-    }
-
-    public function route($methods, $uri, $action = null)
-    {
-        $this->container->get('Router')->addRoute($methods, $uri, $action);
+        $this->container->get('Router')->route('POST', $uri, $action);
     }
 
     public function run()
@@ -71,7 +65,7 @@ class Application
         // including the _controller and any placeholders that are in the route's pattern
         $dispatcher->addSubscriber($this->container->get('RouterListener'));
         // add exception controller event
-        $dispatcher->addSubscriber($this->container->get('ExceptionListener'));
+        //$dispatcher->addSubscriber($this->container->get('ExceptionListener'));
         // create controller and argument resolvers
         $controllerResolver = $this->container->get('ControllerResolver');
         $argumentResolver = $this->container->get('ArgumentResolver');
