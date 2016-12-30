@@ -40,7 +40,7 @@ class Router extends RouteCollection
     public function loadPackage($package)
     {
         // todo make here decoupled
-        $pkgInfo = include_once SYSTEM_PATH.'packages/'.$package.'/app.php';
+        $pkgInfo = include_once SYSTEM_PATH.'packages/'.$package.'/config.php';
         foreach ($pkgInfo['routes'] as $route) {
             $uri = $pkgInfo['uri'].$route['uri'];
             $this->add($uri, $this->createRoute($route['method'], $uri, $route['action']));
