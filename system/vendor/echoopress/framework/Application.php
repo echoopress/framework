@@ -7,7 +7,6 @@ namespace Echoopress\Framework;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernel;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 
 class Application
@@ -25,7 +24,7 @@ class Application
             \Symfony\Component\Debug\Debug::enable();
         }
 
-        $this->container = new ContainerBuilder();
+        $this->container = new Container();
         $this->container->register('Router', 'Echoopress\Framework\Router');
         $this->container->register('RouteCollection', 'Symfony\Component\Routing\RouteCollection');
         $this->container->register('EventDispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher');
@@ -43,14 +42,35 @@ class Application
             ->addArgument($this->container->get('RequestStack'));
     }
 
-    public function get($uri, $action = null)
+    public function get($uri, $action)
     {
-        $this->container->get('Router')->route('GET', $uri, $action);
+        $this->route('GET', $uri, $action);
     }
 
-    public function post($uri, $action = null)
+    public function post($uri, $action)
     {
-        $this->container->get('Router')->route('POST', $uri, $action);
+        $this->route('POST', $uri, $action);
+    }
+
+    /**
+     * Add a route to the underlying route collection.
+     *
+     * @param  array|string  $methods
+     * @param  string  $uri
+     * @param  \Closure|array|string|null  $action
+     * @return
+     */
+    public function route($methods, $uri, $action)
+    {
+        if (false === strpos($action, ':')) {
+            // if $action is a package name, we register the package
+            $this->container->register($action, $action.'\Package');
+            // load package routes
+            $routes = $this->container->get($action)->config();
+            $this->container->get('Router')->createPackageRoutes($routes['routes'], $routes['uri']);
+        } else {
+            $this->container->get('Router')->route($methods, $uri, $action);
+        }
     }
 
     public function run()

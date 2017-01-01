@@ -19,30 +19,34 @@ class Router extends RouteCollection
     // todo add methods checking
     public static $verbs = ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
 
-    /**
-     * Add a route to the underlying route collection.
-     *
-     * @param  array|string  $methods
-     * @param  string  $uri
-     * @param  \Closure|array|string|null  $action
-     * @return
-     */
-    public function route($methods, $uri, $action)
-    {
-        if (false === strpos($action, ':')) {
-            // load package routes
-            $this->loadPackage($action);
-        } else {
-            $this->add($uri, $this->createRoute($methods, $uri, $action));
-        }
-    }
+//    /**
+//     * Add a route to the underlying route collection.
+//     *
+//     * @param  array|string  $methods
+//     * @param  string  $uri
+//     * @param  \Closure|array|string|null  $action
+//     * @return
+//     */
+//    public function route($methods, $uri, $action)
+//    {
+//        if (false === strpos($action, ':')) {
+//            // load package routes
+//            $this->loadPackage($action);
+//        } else {
+//            $this->add($uri, $this->createRoute($methods, $uri, $action));
+//        }
+//    }
 
-    public function loadPackage($package)
+    /**
+     * Create route instances for package
+     *
+     * @param $routes array
+     * @param $packageUri string
+     */
+    public function createPackageRoutes($routes, $packageUri)
     {
-        // todo make here decoupled
-        $pkgInfo = include_once SYSTEM_PATH.'packages/'.$package.'/config.php';
-        foreach ($pkgInfo['routes'] as $route) {
-            $uri = $pkgInfo['uri'].$route['uri'];
+        foreach ($routes as $route) {
+            $uri = $packageUri.$route['uri'];
             $this->add($uri, $this->createRoute($route['method'], $uri, $route['action']));
         }
     }
