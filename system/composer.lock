@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "957d0ff3b05017d7a534f70f39c6a470",
-    "content-hash": "f0a24dc81fb97c0054a01c04559024b5",
+    "hash": "9a0c676cf5dc701a56ca62afb6f2e8ca",
+    "content-hash": "b00c62b95c391022dc7e3ddcb1b4cc1d",
     "packages": [
         {
             "name": "psr/log",
@@ -502,6 +502,61 @@
                 "url"
             ],
             "time": "2016-11-25 12:32:42"
+        },
+        {
+            "name": "symfony/templating",
+            "version": "v3.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/templating.git",
+                "reference": "709cb8145bbac2514065111d9588b0c57aa3bb9d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/templating/zipball/709cb8145bbac2514065111d9588b0c57aa3bb9d",
+                "reference": "709cb8145bbac2514065111d9588b0c57aa3bb9d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "psr/log": "~1.0"
+            },
+            "suggest": {
+                "psr/log": "For using debug logging in loaders"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Templating\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Templating Component",
+            "homepage": "https://symfony.com",
+            "time": "2016-09-06 11:07:23"
         }
     ],
     "packages-dev": [],
