@@ -24,22 +24,23 @@ class Application
             \Symfony\Component\Debug\Debug::enable();
         }
 
-        $this->container = new Container();
-        $this->container->register('Router', 'Echoopress\Framework\Router');
-        $this->container->register('RouteCollection', 'Symfony\Component\Routing\RouteCollection');
-        $this->container->register('EventDispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher');
-        $this->container->register('RequestContext', 'Symfony\Component\Routing\RequestContext');
-        $this->container->register('RequestStack', 'Symfony\Component\HttpFoundation\RequestStack');
-        $this->container->register('ControllerResolver', 'Symfony\Component\HttpKernel\Controller\ControllerResolver');
-        $this->container->register('ArgumentResolver', 'Symfony\Component\HttpKernel\Controller\ArgumentResolver');
-        $this->container->register('ExceptionListener', 'Symfony\Component\HttpKernel\EventListener\ExceptionListener')
+        $this->container = Container::getInstance();
+        $this->container->register('router', 'Echoopress\Framework\Router');
+        $this->container->register('route_collection', 'Symfony\Component\Routing\RouteCollection');
+        $this->container->register('event_dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher');
+        $this->container->register('request_context', 'Symfony\Component\Routing\RequestContext');
+        $this->container->register('request_stack', 'Symfony\Component\HttpFoundation\RequestStack');
+        $this->container->register('controller_resolver', 'Symfony\Component\HttpKernel\Controller\ControllerResolver');
+        $this->container->register('argument_resolver', 'Symfony\Component\HttpKernel\Controller\ArgumentResolver');
+        $this->container->register('exception_listener', 'Symfony\Component\HttpKernel\EventListener\ExceptionListener')
             ->addArgument('Echoopress\Framework\ExceptionController::exceptionAction');
-        $this->container->register('UrlMatcher', 'Symfony\Component\Routing\Matcher\UrlMatcher')
-            ->addArgument($this->container->get('Router'))
-            ->addArgument($this->container->get('RequestContext'));
-        $this->container->register('RouterListener', 'Symfony\Component\HttpKernel\EventListener\RouterListener')
-            ->addArgument($this->container->get('UrlMatcher'))
-            ->addArgument($this->container->get('RequestStack'));
+        $this->container->register('url_matcher', 'Symfony\Component\Routing\Matcher\UrlMatcher')
+            ->addArgument($this->container->get('router'))
+            ->addArgument($this->container->get('request_context'));
+        $this->container->register('router_listener', 'Symfony\Component\HttpKernel\EventListener\RouterListener')
+            ->addArgument($this->container->get('url_matcher'))
+            ->addArgument($this->container->get('request_stack'));
+        $this->container->register('templating', 'Echoopress\Framework\Templating');
     }
 
     public function get($uri, $action)
@@ -67,9 +68,9 @@ class Application
             $this->container->register($action, $action.'\Package');
             // load package routes
             $routes = $this->container->get($action)->config();
-            $this->container->get('Router')->createPackageRoutes($routes['routes'], $routes['uri']);
+            $this->container->get('router')->createPackageRoutes($routes['routes'], $routes['uri']);
         } else {
-            $this->container->get('Router')->route($methods, $uri, $action);
+            $this->container->get('router')->route($methods, $uri, $action);
         }
     }
 
@@ -78,19 +79,19 @@ class Application
         // create the Request object
         $request = Request::createFromGlobals();
         // set up route matcher
-        $this->container->get('UrlMatcher');
+        $this->container->get('url_matcher');
         // create EventDispatcher
-        $dispatcher = $this->container->get('EventDispatcher');
+        $dispatcher = $this->container->get('event_dispatcher');
         // execute the routing layer, returns an array of information about the matched request,
         // including the _controller and any placeholders that are in the route's pattern
-        $dispatcher->addSubscriber($this->container->get('RouterListener'));
+        $dispatcher->addSubscriber($this->container->get('router_listener'));
         // add exception controller event
         //$dispatcher->addSubscriber($this->container->get('ExceptionListener'));
         // create controller and argument resolvers
-        $controllerResolver = $this->container->get('ControllerResolver');
-        $argumentResolver = $this->container->get('ArgumentResolver');
+        $controllerResolver = $this->container->get('controller_resolver');
+        $argumentResolver = $this->container->get('argument_resolver');
         // instantiate the kernel
-        $kernel = new HttpKernel($dispatcher, $controllerResolver, $this->container->get('RequestStack'), $argumentResolver);
+        $kernel = new HttpKernel($dispatcher, $controllerResolver, $this->container->get('request_stack'), $argumentResolver);
         // execute the kernel, which turns the request into a response by dispatching events, and calling controller
         $response = $kernel->handle($request);
         // send the headers and echo the content
