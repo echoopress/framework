@@ -6,37 +6,13 @@
 namespace Echoopress\Framework;
 
 use Closure;
+use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class Router extends RouteCollection
+class Routing extends RouteCollection
 {
-    /**
-     * All of the verbs supported by the router.
-     *
-     * @var array
-     */
-    // todo add methods checking
-    public static $verbs = ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
-
-//    /**
-//     * Add a route to the underlying route collection.
-//     *
-//     * @param  array|string  $methods
-//     * @param  string  $uri
-//     * @param  \Closure|array|string|null  $action
-//     * @return
-//     */
-//    public function route($methods, $uri, $action)
-//    {
-//        if (false === strpos($action, ':')) {
-//            // load package routes
-//            $this->loadPackage($action);
-//        } else {
-//            $this->add($uri, $this->createRoute($methods, $uri, $action));
-//        }
-//    }
-
     /**
      * Create route instances for package
      *
@@ -63,21 +39,28 @@ class Router extends RouteCollection
     {
         $route = new Route($uri);
         // If the route is a string and routing to a controller file
-        if ($this->actionReferencesController($action))
-        {
+        if ($this->actionReferencesController($action)) {
             $route->setDefault('_controller', $action);
-        }
-        else
-        {
-//            $route->setDefault('_controller', function($argument = null) use ($action) {
-//                return new Response($action($argument));
-//            });
+        } else {
             // todo convert String to Response type
             $route->setDefault('_controller', $action);
         }
         $route->setMethods($methods);
 
         return $route;
+    }
+
+    /**
+     * Add a route to the underlying route collection.
+     *
+     * @param  array|string  $methods
+     * @param  string  $uri
+     * @param  \Closure|array|string|null  $action
+     * @return
+     */
+    public function route($methods, $uri, $action)
+    {
+        $this->add($uri, $this->createRoute($methods, $uri, $action));
     }
 
     /**
@@ -94,4 +77,25 @@ class Router extends RouteCollection
         return is_string($action);
     }
 
+    /**
+     * Generates a URL from the given parameters.
+     *
+     * @param string $route         The name of the route
+     * @param mixed  $parameters    An array of parameters
+     * @param int    $referenceType The type of reference (one of the constants in UrlGeneratorInterface)
+     *
+     * @return string The generated URL
+     *
+     * @see UrlGeneratorInterface
+     */
+    public function generateUrl($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    {
+        //$context = $this->container->get('request_context');
+        //$routes = $this->container->get('routing');
+
+        $generator = new \Symfony\Component\Routing\Generator\UrlGenerator($this, new RequestContext());
+
+        $url = $generator->generate($route, $parameters, $referenceType);
+        return $url;
+    }
 }
