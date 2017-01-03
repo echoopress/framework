@@ -6,7 +6,6 @@
 namespace Echoopress\Framework;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\HttpKernel;
 
 
 class Application
@@ -23,10 +22,9 @@ class Application
         if (DEBUG) {
             \Symfony\Component\Debug\Debug::enable();
         }
-
         $this->container = Container::getInstance();
-        $this->container->register('router', 'Echoopress\Framework\Router');
-        $this->container->register('route_collection', 'Symfony\Component\Routing\RouteCollection');
+        // For Application
+        $this->container->register('routing', 'Echoopress\Framework\Routing');
         $this->container->register('event_dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher');
         $this->container->register('request_context', 'Symfony\Component\Routing\RequestContext');
         $this->container->register('request_stack', 'Symfony\Component\HttpFoundation\RequestStack');
@@ -35,11 +33,17 @@ class Application
         $this->container->register('exception_listener', 'Symfony\Component\HttpKernel\EventListener\ExceptionListener')
             ->addArgument('Echoopress\Framework\ExceptionController::exceptionAction');
         $this->container->register('url_matcher', 'Symfony\Component\Routing\Matcher\UrlMatcher')
-            ->addArgument($this->container->get('router'))
+            ->addArgument($this->container->get('routing'))
             ->addArgument($this->container->get('request_context'));
         $this->container->register('router_listener', 'Symfony\Component\HttpKernel\EventListener\RouterListener')
             ->addArgument($this->container->get('url_matcher'))
             ->addArgument($this->container->get('request_stack'));
+        $this->container->register('http_kernel', 'Symfony\Component\HttpKernel\HttpKernel')
+            ->addArgument($this->container->get('event_dispatcher'))
+            ->addArgument($this->container->get('controller_resolver'))
+            ->addArgument($this->container->get('request_stack'))
+            ->addArgument($this->container->get('argument_resolver'));
+        // For Controller
         $this->container->register('templating', 'Echoopress\Framework\Templating');
     }
 
@@ -64,13 +68,13 @@ class Application
     public function route($methods, $uri, $action)
     {
         if (false === strpos($action, ':')) {
-            // if $action is a package name, we register the package
-            $this->container->register($action, $action.'\Package');
-            // load package routes
-            $routes = $this->container->get($action)->config();
-            $this->container->get('router')->createPackageRoutes($routes['routes'], $routes['uri']);
+            // if $action is a package, we register it as service container
+            $this->container->registerPackage($action);
+            // loading package routes
+            $routes = $this->container->getPackage($action)->config();
+            $this->container->get('routing')->createPackageRoutes($routes['routes'], $routes['uri']);
         } else {
-            $this->container->get('router')->route($methods, $uri, $action);
+            $this->container->get('routing')->route($methods, $uri, $action);
         }
     }
 
@@ -91,12 +95,12 @@ class Application
         $controllerResolver = $this->container->get('controller_resolver');
         $argumentResolver = $this->container->get('argument_resolver');
         // instantiate the kernel
-        $kernel = new HttpKernel($dispatcher, $controllerResolver, $this->container->get('request_stack'), $argumentResolver);
+        $kernel = $this->container->get('http_kernel');
         // execute the kernel, which turns the request into a response by dispatching events, and calling controller
         $response = $kernel->handle($request);
         // send the headers and echo the content
         $response->send();
-        // triggers the kernel.terminate event
+        // todo triggers the kernel.terminate event
         $kernel->terminate($request, $response);
     }
 }
