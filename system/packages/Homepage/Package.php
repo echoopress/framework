@@ -6,35 +6,41 @@ class Package implements \Echoopress\Framework\Package
 {
     public function config()
     {
-        return array(
+        return [
             'name' => 'Homepage',
             'version' => '0.1',
             'description' => '',
             'author' => '',
             'theme' => '/theme/default',
             'uri' => '', // Necessary. empty for homepage
+            'path' => __DIR__,
             'routes' => $this->routes(),
-        );
+        ];
     }
 
     public function routes()
     {
-        return array(
-            array(
+        return [
+            [
                 'method' => 'GET',
                 'uri' => '/',
                 'action' => 'Homepage\Controller\HomeController::indexAction'
-            ),
-            array(
+            ],
+            [
                 'method' => 'GET',
                 'uri' => '/welcome/{name}',
                 'action' => 'Homepage\Controller\HomeController::welcomeAction'
-            ),
-            array(
+            ],
+            [
                 'method' => ['GET', 'POST'],
                 'uri' => '/post',
                 'action' => 'Homepage\Controller\HomeController::postAction'
-            ),
-        );
+            ],
+            [
+                'method' => 'GET',
+                'uri' => '/test',
+                'action' => 'Homepage\Controller\HomeController::testAction'
+            ],
+        ];
     }
 }
