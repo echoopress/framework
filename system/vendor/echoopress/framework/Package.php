@@ -1,12 +1,18 @@
 <?php
-
 /**
  * Package.php
  */
 
 namespace Echoopress\Framework;
 
-interface Package
+abstract class Package implements PackageInterface
 {
-    public function config();
+    public function __construct()
+    {
+        // Add ControllerInitializedEvent Listener
+        $dispatcher = Container::getInstance()->get('event_dispatcher');
+        $dispatcher->addListener(ControllerInitializedEvent::NAME, function(ControllerInitializedEvent $event){
+            $event->setConfig($this->config());
+        });
+    }
 }

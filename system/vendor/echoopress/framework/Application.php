@@ -22,8 +22,8 @@ class Application
         if (DEBUG) {
             \Symfony\Component\Debug\Debug::enable();
         }
-        $this->container = Container::getInstance();
         // For Application
+        $this->container = Container::getInstance();
         $this->container->register('routing', 'Echoopress\Framework\Routing');
         $this->container->register('event_dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher');
         $this->container->register('request_context', 'Symfony\Component\Routing\RequestContext');
@@ -68,6 +68,7 @@ class Application
     public function route($methods, $uri, $action)
     {
         if (false === strpos($action, ':')) {
+            // todo throw exception, if package not found.
             // if $action is a package, we register it as service container
             $this->container->registerPackage($action);
             // loading package routes
@@ -90,7 +91,7 @@ class Application
         // including the _controller and any placeholders that are in the route's pattern
         $dispatcher->addSubscriber($this->container->get('router_listener'));
         // add exception controller event
-        //$dispatcher->addSubscriber($this->container->get('ExceptionListener'));
+        //$dispatcher->addSubscriber($this->container->get('exception_listener'));
         // create controller and argument resolvers
         $controllerResolver = $this->container->get('controller_resolver');
         $argumentResolver = $this->container->get('argument_resolver');

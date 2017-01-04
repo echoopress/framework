@@ -5,7 +5,6 @@
 
 namespace Echoopress\Framework;
 
-//use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -25,12 +24,21 @@ abstract class Controller
 {
     protected $container = null;
 
+    protected $dispatcher = null;
+
     protected $request = null;
+
+    protected $config = null;
 
     public function __construct()
     {
         $this->container = Container::getInstance();
-        // todo set up $this->request
+        $this->dispatcher = $this->get('event_dispatcher');
+        // Assign package config information
+        $this->config = $this->dispatcher
+            ->dispatch(ControllerInitializedEvent::NAME, new ControllerInitializedEvent())
+            ->getConfig();
+        // todo assign $this->request
     }
 
     protected function response($string)
