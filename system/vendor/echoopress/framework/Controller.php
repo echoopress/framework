@@ -22,10 +22,24 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 abstract class Controller
 {
+    /**
+     * @var \Echoopress\Framework\Container
+     */
     protected $container = null;
 
+    /**
+     * @var \Symfony\Component\EventDispatcher\EventDispatcher
+     */
     protected $dispatcher = null;
 
+    /**
+     * @var \Symfony\Component\HttpFoundation\Response
+     */
+    protected $response = null;
+
+    /**
+     * @var \Symfony\Component\HttpFoundation\Request
+     */
     protected $request = null;
 
     protected $config = null;
@@ -34,16 +48,12 @@ abstract class Controller
     {
         $this->container = Container::getInstance();
         $this->dispatcher = $this->get('event_dispatcher');
+        $this->request = $this->container->get('request_stack')->getCurrentRequest();
+        $this->response = new Response();
         // Assign package config information
         $this->config = $this->dispatcher
             ->dispatch(ControllerInitializedEvent::NAME, new ControllerInitializedEvent())
             ->getConfig();
-        // todo assign $this->request
-    }
-
-    protected function response($string)
-    {
-        return new Response($string);
     }
 
     /**
@@ -106,6 +116,17 @@ abstract class Controller
     protected function redirectToRoute($route, array $parameters = array(), $status = 302)
     {
         return $this->redirect($this->generateUrl($route, $parameters), $status);
+    }
+
+    /**
+     * Returns a Response object
+     *
+     * @param $string
+     * @return Response
+     */
+    protected function response($string)
+    {
+        return $this->response->setContent($string);
     }
 
     /**
