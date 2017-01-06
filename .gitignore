@@ -1,1 +1,5 @@
 .idea
+system/vendor/doctrine/*
+system/vendor/symfony/*
+system/vendor/twig/*
+system/vendor/bin/*
