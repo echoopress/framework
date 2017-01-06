@@ -24,14 +24,14 @@ class Application
         }
         // For Application
         $this->container = Container::getInstance();
-        $this->container->register('routing', 'Echoopress\Framework\Routing');
+        $this->container->register('routing', 'Lightyping\Framework\Routing');
         $this->container->register('event_dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher');
         $this->container->register('request_context', 'Symfony\Component\Routing\RequestContext');
         $this->container->register('request_stack', 'Symfony\Component\HttpFoundation\RequestStack');
         $this->container->register('controller_resolver', 'Symfony\Component\HttpKernel\Controller\ControllerResolver');
         $this->container->register('argument_resolver', 'Symfony\Component\HttpKernel\Controller\ArgumentResolver');
         $this->container->register('exception_listener', 'Symfony\Component\HttpKernel\EventListener\ExceptionListener')
-            ->addArgument('Echoopress\Framework\ExceptionController::exceptionAction');
+            ->addArgument('Lightyping\Framework\ExceptionController::exceptionAction');
         $this->container->register('url_matcher', 'Symfony\Component\Routing\Matcher\UrlMatcher')
             ->addArgument($this->container->get('routing'))
             ->addArgument($this->container->get('request_context'));
@@ -44,7 +44,7 @@ class Application
             ->addArgument($this->container->get('request_stack'))
             ->addArgument($this->container->get('argument_resolver'));
         // For Controller
-        $this->container->register('templating', 'Echoopress\Framework\Templating');
+        $this->container->register('templating', 'Lightyping\Framework\Templating');
     }
 
     public function get($uri, $action)

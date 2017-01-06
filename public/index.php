@@ -8,7 +8,7 @@ define('SITE_PATH',__DIR__.'/');
 define('SYSTEM_PATH',__DIR__.'/../system/');
 require_once SYSTEM_PATH.'vendor/autoload.php';
 
-$app = new Application();
+$app = new \Lightyping\Framework\Application();
 
 //$app->get('/', 'Homepage\HomeController::indexAction');
 //$app->get('/welcome/{name}', 'Homepage\HomeController::welcomeAction');
