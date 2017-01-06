@@ -1,7 +1,7 @@
 {
-    "name": "echoopress/framework",
+    "name": "lightyping/framework",
     "description": "",
-    "keywords": ["microframework", "EchooPress"],
+    "keywords": ["microframework", "Lightyping"],
     "license": "MIT",
     "require": {
         "symfony/http-foundation": "^3.2",
@@ -13,7 +13,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Echoopress\\Framework\\": "vendor/echoopress/framework/",
+            "Lightyping\\Framework\\": "vendor/lightyping/framework/",
             "": "packages/"
         }
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Echoopress\Framework;
+namespace Lightyping\Framework;
 
 use Symfony\Component\Templating\PhpEngine;
 use Symfony\Component\Templating\TemplateNameParser;

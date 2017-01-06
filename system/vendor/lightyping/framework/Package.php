@@ -3,7 +3,7 @@
  * Package.php
  */
 
-namespace Echoopress\Framework;
+namespace Lightyping\Framework;
 
 abstract class Package implements PackageInterface
 {

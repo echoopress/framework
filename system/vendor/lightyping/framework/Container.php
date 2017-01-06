@@ -3,7 +3,7 @@
  * Container.php
  */
 
-namespace Echoopress\Framework;
+namespace Lightyping\Framework;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

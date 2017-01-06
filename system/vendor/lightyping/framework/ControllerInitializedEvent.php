@@ -3,7 +3,7 @@
  * ControllerInitializedEvent.php
  */
 
-namespace Echoopress\Framework;
+namespace Lightyping\Framework;
 
 use Symfony\Component\EventDispatcher\Event;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Echoopress\Framework;
+namespace Lightyping\Framework;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Debug\Exception\FlattenException;

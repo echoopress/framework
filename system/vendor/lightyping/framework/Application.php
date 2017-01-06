@@ -3,7 +3,7 @@
  * Application.php
  */
 
-namespace Echoopress\Framework;
+namespace Lightyping\Framework;
 
 use Symfony\Component\HttpFoundation\Request;
 

@@ -4,7 +4,7 @@
  * PackageInterface.php
  */
 
-namespace Echoopress\Framework;
+namespace Lightyping\Framework;
 
 interface PackageInterface
 {

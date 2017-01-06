@@ -71,7 +71,7 @@ class ComposerStaticInitf272c8bb3180abed925f06fd6a7b5915
         ),
         'Echoopress\\Framework\\' => 
         array (
-            0 => __DIR__ . '/..' . '/echoopress/framework',
+            0 => __DIR__ . '/..',
         ),
     );
 

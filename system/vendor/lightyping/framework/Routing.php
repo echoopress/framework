@@ -3,7 +3,7 @@
  * Router.php
  */
 
-namespace Echoopress\Framework;
+namespace Lightyping\Framework;
 
 use Closure;
 use Symfony\Component\Routing\RequestContext;
