@@ -15,6 +15,6 @@ return array(
     'Symfony\\Component\\DependencyInjection\\' => array($vendorDir . '/symfony/dependency-injection'),
     'Symfony\\Component\\Debug\\' => array($vendorDir . '/symfony/debug'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
-    'Echoopress\\Framework\\' => array($vendorDir . '/echoopress/framework'),
+    'Lightyping\\Framework\\' => array($vendorDir . '/lightyping/framework'),
     '' => array($baseDir . '/packages'),
 );

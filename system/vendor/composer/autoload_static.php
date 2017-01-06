@@ -28,7 +28,7 @@ class ComposerStaticInitf272c8bb3180abed925f06fd6a7b5915
         ),
         'E' => 
         array (
-            'Echoopress\\Framework\\' => 21,
+            'Lightyping\\Framework\\' => 21,
         ),
     );
 
@@ -69,7 +69,7 @@ class ComposerStaticInitf272c8bb3180abed925f06fd6a7b5915
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
-        'Echoopress\\Framework\\' => 
+        'Lightyping\\Framework\\' =>
         array (
             0 => __DIR__ . '/..',
         ),
