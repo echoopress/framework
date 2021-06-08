@@ -1,0 +1,50 @@
+
+File Structure:
+system/
+	vendor/
+		composer/
+		symfony/
+		etFramework/
+		    src/
+		    tests/
+	modules/ // same as applications
+		page/
+		comment/
+		user/
+		admin/
+		taxonomy/
+		default-theme/
+		shortcode/
+		template/
+		cache/
+		installer/
+	functions/ // An API layer, symfony class methods translation
+		http.php
+		cache.php
+	init.php
+applications/
+	hello/
+	    m/
+	    v/
+	    c/
+	    vendor/
+	blog/
+	importer/
+	exporter/
+	shop/
+	news/
+assets/
+	uploads/
+	caches/
+	themes/
+		default/
+			css/
+			fonts/
+			images/
+			js/
+			libs/
+				bootstrap/
+			functions.php
+index.php
+config.php
+route.php
