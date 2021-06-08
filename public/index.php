@@ -12,6 +12,7 @@ $app = new \Lightyping\Framework\Application();
 
 //$app->get('/', 'Homepage\HomeController::indexAction');
 //$app->get('/welcome/{name}', 'Homepage\HomeController::welcomeAction');
-$app->get('/', 'Demo');
+$app->get('/demo', 'Demo');
+$app->get('/', 'Etonncom');
 
 $app->run();

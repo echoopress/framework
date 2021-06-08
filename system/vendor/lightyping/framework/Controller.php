@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 abstract class Controller
 {
     /**
-     * @var \Echoopress\Framework\Container
+     * @var \Lightyping\Framework\Container
      */
     protected $container = null;
 
@@ -41,6 +41,10 @@ abstract class Controller
      * @var \Symfony\Component\HttpFoundation\Request
      */
     protected $request = null;
+
+    /**
+     * @var \
+     */
 
     protected $config = null;
 
